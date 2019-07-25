@@ -5,7 +5,7 @@ class FB2HTML {
     constructor(data, options) {
 
         options = Object.assign({
-            hyphenate: true
+            hyphenate: false
         }, options);
 
         this.fictionBook = new xmldoc.XmlDocument(data);
@@ -49,9 +49,12 @@ class FB2HTML {
     }
     
     getAuthors() {
-        const authors = this.fictionBook
-            .descendantWithPath('description.title-info')
-            .childrenNamed('author')
+        const element = this.fictionBook
+            .descendantWithPath('description.title-info');
+
+        if (!element) return;
+
+        const authors = element.childrenNamed('author');
     
         return authors.map(author => {
             const firstName = author.childNamed('first-name');
@@ -80,7 +83,9 @@ class FB2HTML {
 
     getAnnotation() {
         const anotation = this.fictionBook
-            .descendantWithPath('description.title-info.annotation')
+            .descendantWithPath('description.title-info.annotation');
+
+        if (!anotation) return;
 
         return this.__content(anotation.children);
     }
@@ -92,9 +97,12 @@ class FB2HTML {
     }
 
     getCover() {
-        const image = this.fictionBook
-            .descendantWithPath('description.title-info.coverpage')
-            .childNamed('image');
+        const element = this.fictionBook
+            .descendantWithPath('description.title-info.coverpage');
+
+        if (!element) return;
+
+        const image = element.childNamed('image');
 
         if (!image) return;
 
@@ -147,7 +155,12 @@ class FB2HTML {
                 case 'strong':
                     return this.__content(node.children, '<b>%DATA%</b>')  
                 case 'emphasis':
-                    return this.__content(node.children, '<i>%DATA%</i>')  
+                    return this.__content(node.children, '<i>%DATA%</i>')
+                case 'epigraph':
+                    return this.__content(node.children, '<blockquote>%DATA%</blockquote>') 
+                case 'cite':
+                case 'text-author':
+                    return this.__content(node.children, '<cite>%DATA%</cite>') 
                 default:
                     return this.__content(node.children, tmpl);
             }
