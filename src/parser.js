@@ -1,6 +1,6 @@
 const xmldoc = require('xmldoc');
 
-class FB2JS {
+class FB2HTML {
     constructor(data) {
         this.fictionBook = new xmldoc.XmlDocument(data);
 
@@ -72,6 +72,12 @@ class FB2JS {
         return this.__content(anotation.children);
     }
 
+    getLanguage() {
+        const element = this.fictionBook
+            .descendantWithPath('description.title-info.lang');
+        return element.val;
+    }
+
     getCover() {
         const image = this.fictionBook
             .descendantWithPath('description.title-info.coverpage')
@@ -136,4 +142,4 @@ class FB2JS {
     }
 }
 
-module.exports = FB2JS;
+module.exports = FB2HTML;
