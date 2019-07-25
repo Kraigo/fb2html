@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "hyphen": "^1.1.1",
     "xmldoc": "^1.1.2"
   }
 }

@@ -1,8 +1,21 @@
 const xmldoc = require('xmldoc');
+const Hyphen = require('hyphen');
 
 class FB2HTML {
-    constructor(data) {
+    constructor(data, options) {
+
+        options = Object.assign({
+            hyphenate: true
+        }, options);
+
         this.fictionBook = new xmldoc.XmlDocument(data);
+
+        if (options.hyphenate) {
+            try {
+                const lang = this.getLanguage().toLowerCase();
+                this.hyphenate = new Hyphen(require(`hyphen/patterns/${lang}`));
+            } catch(e) {}
+        }
 
         this.book = {
             title: this.getTitle(),
@@ -116,7 +129,7 @@ class FB2HTML {
         if (typeof node === 'string') {
             return tmpl
                 ? tmpl.replace('%DATA%', this.__content(node))
-                : node;
+                : this.hyphenate ? this.hyphenate(node) : node;
         }
 
         if (Array.isArray(node)) {
