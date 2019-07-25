@@ -1,6 +1,6 @@
 const fs = require('fs');
 const fileUrl = './test/Minina_Porok-serdca.mHTyIQ.198265.fb2';
-const FB2JS = require('./src/parser');
+const FB2HTML = require('./src/parser');
 
 const template = `<!DOCTYPE html>
 <html lang="en">
@@ -21,7 +21,7 @@ if (!fs.existsSync('./dist')){
 
 fs.readFile(fileUrl,'utf8', (err, data) => {
     if (err) return;
-    var bookData = new FB2JS(data).format();
+    var bookData = new FB2HTML(data).format();
     var book = template.replace('{{body}}', bookData);
 
     fs.writeFile('./dist/result.html', book, (err) => {

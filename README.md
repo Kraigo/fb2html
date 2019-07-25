@@ -1,12 +1,19 @@
+## Install
+```
+npm install pdf2html --save
+```
+
 ## Example
 
 ```javascript
+const FB2HTML = require('fb2html');
 const options = {
     hyphenate: true
 }
-const book = new FB2JS(data);
+const book = new FB2HTML(data);
 const result = book.format();
 ```
+
 ## Options
 * `hyphenate` (boolean) - using [Hyphen](https://www.npmjs.com/package/hyphen) plugin if language present in book
 
