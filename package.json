@@ -4,7 +4,9 @@
   "description": "",
   "main": "src/parser.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "Kraigo",
   "license": "ISC",
@@ -13,7 +15,10 @@
     "xmldoc": "^1.1.2"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/Kraigo/fb2html"
+    "type": "git",
+    "url": "https://github.com/Kraigo/fb2html"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0"
   }
 }
