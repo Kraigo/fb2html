@@ -6,10 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Kraigo",
   "license": "ISC",
   "dependencies": {
     "hyphen": "^1.1.1",
     "xmldoc": "^1.1.2"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Kraigo/fb2html"
   }
 }
