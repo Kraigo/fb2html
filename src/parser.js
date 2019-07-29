@@ -1,5 +1,9 @@
+
+const path = require('path');
+const fs = require('fs');
 const xmldoc = require('xmldoc');
 const Hyphen = require('hyphen');
+const JSZip = require('jszip');
 
 class FB2HTML {
     constructor(data, options) {
@@ -8,27 +12,68 @@ class FB2HTML {
             hyphenate: false
         }, options);
 
-        this.fictionBook = new xmldoc.XmlDocument(data);
-
+        if (data) {
+            this.fictionBook = new xmldoc.XmlDocument(data);
+        }
         if (options.hyphenate) {
             try {
                 const lang = this.getLanguage().toLowerCase();
                 this.hyphenate = new Hyphen(require(`hyphen/patterns/${lang}`));
             } catch(e) {}
         }
+    }
 
-        this.book = {
+    static read(filePath, options) {
+
+        if (path.extname(filePath) === '.zip') {
+            return FB2HTML.readZip(filePath, options)
+        }
+        else {
+            return FB2HTML.readFile(filePath, options);
+        }
+
+    }
+
+    static readFile(filePath, options) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) reject(err);
+                else resolve(new FB2HTML(data, options));
+            })
+        })
+    }
+
+    static readZip(filePath, options) {
+        return new Promise((resolve, reject) => {
+            fs.readFile(filePath, (err, data) => {
+                if (err) reject(err);
+
+                JSZip.loadAsync(data)
+                    .then((zip) => {
+                        let files = zip.filter((relativePath) => 
+                            path.extname(relativePath) === '.fb2'
+                        )
+                        if (files && files.length) {
+                            return zip.file(files[0].name).async('text');
+                        }
+                        throw new Error('Zip archive does not contains .fb2 files');
+                    })
+                    .then((data) => {
+                        resolve(new FB2HTML(data, options));
+                    })
+            })
+        })
+    }
+
+    format() {
+        const book = {
             title: this.getTitle(),
             author: this.getAuthors(),
             genre: this.getGenres(),
             annotation: this.getAnnotation(),
             cover: this.getCover(),
             body: this.getBody()
-        };
-    }
-
-    format() {
-        const book = this.book;
+        }
 
         return `
             <img src="${book.cover}"></img>
