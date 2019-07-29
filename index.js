@@ -1,5 +1,5 @@
 const fs = require('fs');
-const fileUrl = './test/Minina_Porok-serdca.mHTyIQ.198265.fb2';
+const fileUrl = './tests/documents/nested-test.fb2';
 const FB2HTML = require('./src/parser');
 
 const template = `<!DOCTYPE html>
