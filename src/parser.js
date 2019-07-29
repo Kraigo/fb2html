@@ -186,11 +186,14 @@ class FB2HTML {
         }
 
         if (Array.isArray(node)) {
-            return node.map(item => this.__content(item, tmpl)).join('');
+            const collection = node.map(item => this.__content(item, tmpl)).join('');
+            return tmpl
+                ? tmpl.replace('%DATA%', collection)
+                : collection;
         }
 
         if (node.type === 'text') {
-            return this.__content(node.text, tmpl);
+            return this.__content(node.text);
         }
 
         if (node.type === 'element') {
