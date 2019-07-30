@@ -151,13 +151,8 @@ class FB2HTML {
 
         if (!image) return;
 
-        const imageHref = image.attr['l:href'];
 
-        if (imageHref.charAt(0) === '#') {
-            return this.__image(imageHref.substr(1));
-        }
-
-        return imageHref;
+        return this.__image(image.attr['l:href']);
     }
 
     getBody() {
@@ -166,16 +161,19 @@ class FB2HTML {
         return this.__content(bodies);
     }
 
-    __image(id) {
-        const binaries = this.fictionBook.childrenNamed('binary')
+    __image(href) {
+        if (href.charAt(0) === '#') {
+            const id = href.substr(1);
 
-        const binary = binaries.find(binary => binary.attr['id'] === id);
+            const binaries = this.fictionBook.childrenNamed('binary')
+            const binary = binaries.find(binary => binary.attr['id'] === id);
 
-        if (binary) {
-            return `data:${binary.attr['content-type']};base64,${binary.val}`;
+            if (binary) {
+                return `data:${binary.attr['content-type']};base64,${binary.val}`;
+            }
         }
 
-        return '';
+        return href;        
     }
 
     __content(node, tmpl) {        
@@ -209,6 +207,8 @@ class FB2HTML {
                 case 'cite':
                 case 'text-author':
                     return this.__content(node.children, '<cite>%DATA%</cite>') 
+                case 'image':
+                    return this.__content(`<img src="${this.__image(node.attr['l:href'])}" />`) 
                 default:
                     return this.__content(node.children, tmpl);
             }
