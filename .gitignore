@@ -1,4 +1,2 @@
 node_modules/
 dist/
-tests/**/*.fb2
-tests/**/*.zip

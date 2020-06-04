@@ -1,6 +1,6 @@
 ## Install
 ```
-npm install pdf2html --save
+npm install fb2html --save
 ```
 
 ## Example
