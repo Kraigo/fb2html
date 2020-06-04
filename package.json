@@ -1,13 +1,14 @@
 {
   "name": "fb2html",
-  "version": "1.0.8",
-  "description": "",
+  "version": "1.0.9",
+  "description": "Parser FB2 books to HTML",
   "main": "src/parser.js",
   "scripts": {
     "start": "node index",
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "keywords": ["fb2", "parser", "html"],
   "author": "Kraigo",
   "license": "ISC",
   "dependencies": {
