@@ -105,11 +105,15 @@ class FB2HTML {
             const firstName = author.childNamed('first-name');
             const middleName = author.childNamed('middle-name');
             const lastName = author.childNamed('last-name');
+            const nickname = author.childNamed('nickname');
+            const email = author.childNamed('email');
 
             return [
                 firstName && firstName.val,
                 middleName && middleName.val,
-                lastName && lastName.val
+                lastName && lastName.val,
+                nickname && nickname.val,
+                email && email.val
             ]
             .filter(a => a != null)
             .join(' ')
@@ -208,7 +212,9 @@ class FB2HTML {
                 case 'text-author':
                     return this.__content(node.children, '<cite>%DATA%</cite>') 
                 case 'image':
-                    return this.__content(`<img src="${this.__image(node.attr['l:href'])}" />`) 
+                    return this.__content(`<img src="${this.__image(node.attr['l:href'])}" />`)
+                case 'subtitle':
+                    return this.__content(node.children, '<h4>%DATA%</h4>')
                 default:
                     return this.__content(node.children, tmpl);
             }
