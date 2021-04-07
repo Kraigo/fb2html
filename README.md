@@ -26,3 +26,5 @@ const result = book.format();
 * `getCover()` (string) - url or base64 image
 * `getBody()` (string)
 * `getLanguage()` (string)
+* `getTranslators()` (string)
+* `getKeywords()` (string)
