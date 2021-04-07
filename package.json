@@ -1,6 +1,6 @@
 {
   "name": "fb2html",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Parser FB2 books to HTML",
   "main": "src/parser.js",
   "scripts": {
