@@ -1,6 +1,9 @@
 const fs = require('fs');
-const fileUrl = './tests/documents/nested-test.fb2';
+const path = require('path');
 const FB2HTML = require('./src/parser');
+
+const fileName = 'sonya_shah_pandemiya_vsemirnaya_.zip';
+const fileUrl = path.join(__dirname, 'documents', fileName);
 
 const template = `<!DOCTYPE html>
 <html lang="en">
@@ -19,12 +22,11 @@ if (!fs.existsSync('./dist')){
     fs.mkdirSync('./dist');
 }
 
-fs.readFile(fileUrl,'utf8', (err, data) => {
-    if (err) return;
-    var bookData = new FB2HTML(data).format();
-    var book = template.replace('{{body}}', bookData);
 
-    fs.writeFile('./dist/result.html', book, (err) => {
-        if (err) console.log(err);
-    })
-})
+FB2HTML.read(fileUrl)
+    .then((book) => {
+        var bookData = book.format();
+        var result = template.replace('{{body}}', bookData);
+
+        return fs.promises.writeFile('./dist/result.html', result);
+    });
